@@ -5,7 +5,7 @@ import React from "react";
 
 
 const Profile = async () => {
-    const { userId, redirectToSignIn } = await auth()
+    const { userId } = await auth()
   const isAuth = !!userId;
   const user = await currentUser();
 
