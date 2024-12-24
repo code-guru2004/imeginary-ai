@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import "./globals.css";
-import { ClerkProvider, SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
-
-
+import { ClerkProvider, ClerkLoaded, ClerkLoading } from "@clerk/nextjs";
+import Navbar from "@/components/Navbar";
+import { dark } from "@clerk/themes";
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -15,20 +17,24 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
-    <html lang="en">
-      <body>
-        <header>
-          <SignedOut>
-            <SignInButton />
-          </SignedOut>
-          <SignedIn>
-            <UserButton />
-          </SignedIn>
-        </header>
-        <main>{children}</main>
-      </body>
-    </html>
-  </ClerkProvider>
+    <ClerkProvider appearance={{ baseTheme: dark }}>
+      <html lang="en">
+        <body className={inter.className}>
+          <ClerkLoading>
+            <div className="flex items-center justify-center h-screen text-2xl">
+              LOADING...
+            </div>
+          </ClerkLoading>
+          <ClerkLoaded>
+            <div className="max-w-6xl mx-auto">
+              <div className="flex flex-col h-screen">
+                <Navbar />
+                {children}
+              </div>
+            </div>
+          </ClerkLoaded>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
